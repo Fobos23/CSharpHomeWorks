@@ -11,6 +11,10 @@
       <Content Include="DataArray">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="Autorization\DataBase.txt" />
+      <Content Include="Autorization\DataBase.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

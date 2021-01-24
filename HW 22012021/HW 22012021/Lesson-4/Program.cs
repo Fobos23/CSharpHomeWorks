@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Lesson_4.Autorization;
 
 namespace Lesson_4
 {
@@ -21,6 +22,9 @@ namespace Lesson_4
                     break;
                 case 2:
                     StartTask2();
+                    break;
+                case 3:
+                    StartTask3();
                     break;
             }
         }
@@ -102,6 +106,62 @@ namespace Lesson_4
                     Console.WriteLine(line);
             }
             File.Delete(pathToWrite);
+        }
+
+        private static void StartTask3()
+        {
+            /*Решить задачу с логинами из предыдущего урока, только логины и пароли считать из файла в массив.
+             Создайте структуру Account, содержащую Login и Password.*/
+            
+            var auth = new Auth();
+            var login = string.Empty;
+            var pass = string.Empty;
+            
+            Console.Write("Введите SignIn или SignUp: ");
+            var userCommand = Console.ReadLine();
+            
+            switch (userCommand.ToLower())
+            {
+                case "signin":
+                    var tryCount = 0;
+                    do
+                    {
+                        Console.Write("Введите login: ");
+                        login = Console.ReadLine();
+                        Console.Write("Введите pass: ");
+                        pass = Console.ReadLine();
+
+                        if (auth.SignIn(login, pass))
+                        {
+                            Console.WriteLine("Добро пожаловать!");
+                            break;
+                        }
+                
+                        ++tryCount;
+                        Console.WriteLine($"Логин или пароль был введен неверно, попробуйте еще раз.\nУ вас осталось {3 - tryCount} попыток");
+                    } while (tryCount < 3);
+                    break;
+                case "signup":
+                    do
+                    {
+                        Console.Write("Введите login: ");
+                        login = Console.ReadLine();
+                        Console.Write("Введите pass: ");
+                        pass = Console.ReadLine();
+
+                        if (auth.SignUp(login, pass))
+                        {
+                            Console.WriteLine("Пользователь успешно зарегистрирован!");
+                            break;
+                        }
+
+                        Console.WriteLine($"Такой пользователь уже существует. Придумайте другой логин");
+                    } while (true);
+                    break;
+                default:
+                    Console.WriteLine("Команда была введена неверно!");
+                    break;
+            }
         }
     }
 }
