@@ -6,4 +6,11 @@
         <RootNamespace>Lesson_4</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <None Remove="DataArray" />
+      <Content Include="DataArray">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
