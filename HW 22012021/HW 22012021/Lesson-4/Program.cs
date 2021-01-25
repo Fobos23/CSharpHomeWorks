@@ -1,0 +1,222 @@
+﻿using System;
+using System.IO;
+using Lesson_4.Autorization;
+
+namespace Lesson_4
+{
+    class Program
+    {
+        // Выполнил Андрей Лапшин
+
+        static void Main(string[] args)
+        {
+            var number = 0;
+            Console.Write("Введи номер задачи от 1 до 4: ");
+            if (!int.TryParse(Console.ReadLine(), out number) || number > 4)
+                throw new ArgumentException("Вы ввели некорректное число!");
+
+            switch (number)
+            {
+                case 1:
+                    StartTask1();
+                    break;
+                case 2:
+                    StartTask2();
+                    break;
+                case 3:
+                    StartTask3();
+                    break;
+                case 4:
+                    StartTask4();
+                    break;
+            }
+        }
+
+        private static void StartTask1()
+        {
+            /* Дан целочисленный массив из 20 элементов. Элементы массива могут принимать целые значения
+               от –10 000 до 10 000 включительно. Написать программу, позволяющую найти и вывести количество
+               пар элементов массива, в которых хотя бы одно число делится на 3. В данной задаче под парой
+               подразумевается два подряд идущих элемента массива. Например, для массива из
+               пяти элементов: 6; 2; 9; –3; 6 – ответ: 4.*/
+
+            var myArray = new MyArray(20);
+
+            myArray.SetRandomNumbers(-10000, 10000);
+            for (var i = 0; i < myArray.ArrayLength; i++)
+                Console.WriteLine($"{myArray[i]} ");
+
+            var denominator = 3;
+            var bigramsCount = myArray.GetBigramsCount(denominator);
+            Console.WriteLine(
+                $"\nКоличетсво биграмм, в которых хотя бы 1 число делиться на {denominator} без остатка, равно {bigramsCount}");
+        }
+
+        private static void StartTask2()
+        {
+            /*а) Дописать класс для работы с одномерным массивом. Реализовать конструктор, создающий массив заданной
+             размерности и заполняющий массив числами от начального значения с заданным шагом. Создать свойство Sum, 
+             которые возвращают сумму элементов массива, метод Inverse, меняющий знаки у всех элементов массива, 
+             метод Multi, умножающий каждый элемент массива на определенное число, свойство MaxCount, возвращающее 
+             количество максимальных элементов. В Main продемонстрировать работу класса.
+            б)Добавить конструктор и методы, которые загружают данные из файла и записывают данные в файл.*/
+
+            var startNumber = 1;
+            var step = 4;
+            var length = 5;
+            var myArray = new MyArray(length, startNumber, step);
+
+            Console.WriteLine($"Исходный массив с длиной {length}. Начинается с {startNumber}. Имеет шаг {step}");
+            for (var i = 0; i < myArray.ArrayLength; i++)
+                Console.Write($"{myArray[i]} ");
+
+            Console.WriteLine($"\nСумма элементов массива: {myArray.SumElements}");
+            
+            Console.WriteLine("Инверсия знаков");
+            myArray.Inverse();
+            for (var i = 0; i < myArray.ArrayLength; i++)
+                Console.Write($"{myArray[i]} ");
+
+            var number = 2;
+            Console.WriteLine($"\nУмножение элементов массива на {number}");
+            myArray.Multi(number);
+            for (var i = 0; i < myArray.ArrayLength; i++)
+                Console.Write($"{myArray[i]} ");
+            
+            Console.WriteLine("\nСоздаем новый массив");
+            myArray = new MyArray(new []{10, 2, 10, 3, 4, 5, 10});
+            for (var i = 0; i < myArray.ArrayLength; i++)
+                Console.Write($"{myArray[i]} ");
+            Console.WriteLine($"\nКоличество максимальных элементов: {myArray.MaxCount}");
+            
+            Console.WriteLine("Массив из файла DataArray");
+            var pathToRead = $"{AppDomain.CurrentDomain.BaseDirectory}DataArray";
+            myArray = new MyArray();
+            myArray.GetDataFromFile(pathToRead);
+            for (var i = 0; i < myArray.ArrayLength; i++)
+                Console.Write($"{myArray[i]} ");
+            
+            var pathToWrite = $"{AppDomain.CurrentDomain.BaseDirectory}DataArray{DateTime.Now:yyyyMMddhhmmss}";
+            Console.WriteLine($"\nЗапись массива в файл {pathToWrite}. После отоработки программы, файл удалится");
+            myArray = new MyArray(5);
+            myArray.SetRandomNumbers(-100, 100);
+            myArray.SetDataToFile(pathToWrite);
+            
+            using (var sr = File.OpenText(pathToWrite))
+            {
+                var line = string.Empty;
+                while ((line = sr.ReadLine()) != null)
+                    Console.WriteLine(line);
+            }
+            File.Delete(pathToWrite); // удаляем временный файл
+        }
+
+        private static void StartTask3()
+        {
+            /*Решить задачу с логинами из предыдущего урока, только логины и пароли считать из файла в массив.
+             Создайте структуру Account, содержащую Login и Password.*/
+            
+            var auth = new Auth();
+            var login = string.Empty;
+            var pass = string.Empty;
+            
+            Console.Write("Введите SignIn или SignUp: ");
+            var userCommand = Console.ReadLine();
+            
+            switch (userCommand.ToLower())
+            {
+                case "signin":
+                    var tryCount = 0;
+                    do
+                    {
+                        Console.Write("Введите login: ");
+                        login = Console.ReadLine();
+                        Console.Write("Введите pass: ");
+                        pass = Console.ReadLine();
+
+                        if (auth.SignIn(login, pass))
+                        {
+                            Console.WriteLine("Добро пожаловать!");
+                            break;
+                        }
+                
+                        ++tryCount;
+                        Console.WriteLine($"Логин или пароль был введен неверно, попробуйте еще раз.\nУ вас осталось {3 - tryCount} попыток");
+                    } while (tryCount < 3);
+                    break;
+                case "signup":
+                    do
+                    {
+                        Console.Write("Введите login: ");
+                        login = Console.ReadLine();
+                        Console.Write("Введите pass: ");
+                        pass = Console.ReadLine();
+
+                        if (auth.SignUp(login, pass))
+                        {
+                            Console.WriteLine("Пользователь успешно зарегистрирован!");
+                            break;
+                        }
+
+                        Console.WriteLine($"Такой пользователь уже существует. Придумайте другой логин");
+                    } while (true);
+                    break;
+                default:
+                    Console.WriteLine("Команда была введена неверно!");
+                    break;
+            }
+        }
+
+        private static void StartTask4()
+        {
+            /* а) Реализовать класс для работы с двумерным массивом. Реализовать конструктор, заполняющий
+               массив случайными числами. Создать методы, которые возвращают сумму всех элементов массива, 
+               сумму всех элементов массива больше заданного, свойство, возвращающее минимальный элемент 
+               массива, свойство, возвращающее максимальный элемент массива, метод, возвращающий номер 
+               максимального элемента массива (через параметры, используя модификатор ref или out)
+               *б) Добавить конструктор и методы, которые загружают данные из файла и записывают данные в файл.
+               Дополнительные задачи
+               в) Обработать возможные исключительные ситуации при работе с файлами.*/
+            
+            var twoDimensionalArray = new TwoDimensionalArray(3,3);
+            twoDimensionalArray.SetRandomNumbers(-10, 10);
+            for (var i = 0; i < twoDimensionalArray.Height; i++)
+            {
+                for (var j = 0; j < twoDimensionalArray.Width; j++)
+                    Console.Write($"{twoDimensionalArray[j, i]:0} ");
+                Console.WriteLine();
+            }
+            
+            Console.WriteLine($"Сумма всех элементов массива: {twoDimensionalArray.GetSumElements()}");
+
+            var number = 4;
+            Console.WriteLine($"Сумма всех элементов массива, которые больше {number}: {twoDimensionalArray.GetSumElements(number)}");
+            
+            Console.WriteLine($"Минимальное значение элемента в массиве: {twoDimensionalArray.MinValue}");
+            
+            Console.WriteLine($"Максимальное значение элемента в массиве: {twoDimensionalArray.MaxValue}");
+
+            twoDimensionalArray.GetMaxValueIndex(out var index);
+            Console.WriteLine($"Индекс элемента с максимальным значением: {index}");
+            
+            Console.WriteLine("Вывод двумерного массива из файла DataTwoDomArray");
+            var pathToRead = $"{AppDomain.CurrentDomain.BaseDirectory}DataTwoDimArray";
+            twoDimensionalArray = new TwoDimensionalArray(pathToRead);
+            for (var i = 0; i < twoDimensionalArray.Height; i++)
+            {
+                for (var j = 0; j < twoDimensionalArray.Width; j++)
+                    Console.Write($"{twoDimensionalArray[j, i]:0} ");
+                Console.WriteLine();
+            }
+            
+            Console.WriteLine($"Запись в файл двумерного массива с рандомными значениями");
+            twoDimensionalArray = new TwoDimensionalArray(5, 7);
+            twoDimensionalArray.SetRandomNumbers(-10, 10);
+            
+            var pathToWrite = $"{AppDomain.CurrentDomain.BaseDirectory}DataTwoDimArray{DateTime.Now:yyyyMMddhhmmss}"; 
+            twoDimensionalArray.SetDataToFile(pathToWrite);
+
+            File.Delete(pathToWrite); // удаляем временный файл
+        }
+    }
+}

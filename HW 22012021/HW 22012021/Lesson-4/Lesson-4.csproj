@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net48</TargetFramework>
+        <RootNamespace>Lesson_4</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="DataArray" />
+      <Content Include="DataArray">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Autorization\DataBase.txt" />
+      <Content Include="Autorization\DataBase.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="DataTwoDimArray" />
+      <Content Include="DataTwoDimArray">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>
