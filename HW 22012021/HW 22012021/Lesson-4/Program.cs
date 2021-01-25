@@ -26,6 +26,9 @@ namespace Lesson_4
                 case 3:
                     StartTask3();
                     break;
+                case 4:
+                    StartTask4();
+                    break;
             }
         }
 
@@ -105,7 +108,7 @@ namespace Lesson_4
                 while ((line = sr.ReadLine()) != null)
                     Console.WriteLine(line);
             }
-            File.Delete(pathToWrite);
+            File.Delete(pathToWrite); // удаляем временный файл
         }
 
         private static void StartTask3()
@@ -162,6 +165,58 @@ namespace Lesson_4
                     Console.WriteLine("Команда была введена неверно!");
                     break;
             }
+        }
+
+        private static void StartTask4()
+        {
+            /* а) Реализовать класс для работы с двумерным массивом. Реализовать конструктор, заполняющий
+               массив случайными числами. Создать методы, которые возвращают сумму всех элементов массива, 
+               сумму всех элементов массива больше заданного, свойство, возвращающее минимальный элемент 
+               массива, свойство, возвращающее максимальный элемент массива, метод, возвращающий номер 
+               максимального элемента массива (через параметры, используя модификатор ref или out)
+               *б) Добавить конструктор и методы, которые загружают данные из файла и записывают данные в файл.
+               Дополнительные задачи
+               в) Обработать возможные исключительные ситуации при работе с файлами.*/
+            
+            var twoDimensionalArray = new TwoDimensionalArray(3,3);
+            twoDimensionalArray.SetRandomNumbers(-10, 10);
+            for (var i = 0; i < twoDimensionalArray.Height; i++)
+            {
+                for (var j = 0; j < twoDimensionalArray.Width; j++)
+                    Console.Write($"{twoDimensionalArray[j, i]:0} ");
+                Console.WriteLine();
+            }
+            
+            Console.WriteLine($"Сумма всех элементов массива: {twoDimensionalArray.GetSumElements()}");
+
+            var number = 4;
+            Console.WriteLine($"Сумма всех элементов массива, которые больше {number}: {twoDimensionalArray.GetSumElements(number)}");
+            
+            Console.WriteLine($"Минимальное значение элемента в массиве: {twoDimensionalArray.MinValue}");
+            
+            Console.WriteLine($"Максимальное значение элемента в массиве: {twoDimensionalArray.MaxValue}");
+
+            twoDimensionalArray.GetMaxValueIndex(out var index);
+            Console.WriteLine($"Индекс элемента с максимальным значением: {index}");
+            
+            Console.WriteLine("Вывод двумерного массива из файла DataTwoDomArray");
+            var pathToRead = $"{AppDomain.CurrentDomain.BaseDirectory}DataTwoDimArray";
+            twoDimensionalArray = new TwoDimensionalArray(pathToRead);
+            for (var i = 0; i < twoDimensionalArray.Height; i++)
+            {
+                for (var j = 0; j < twoDimensionalArray.Width; j++)
+                    Console.Write($"{twoDimensionalArray[j, i]:0} ");
+                Console.WriteLine();
+            }
+            
+            Console.WriteLine($"Запись в файл двумерного массива с рандомными значениями");
+            twoDimensionalArray = new TwoDimensionalArray(5, 7);
+            twoDimensionalArray.SetRandomNumbers(-10, 10);
+            
+            var pathToWrite = $"{AppDomain.CurrentDomain.BaseDirectory}DataTwoDimArray{DateTime.Now:yyyyMMddhhmmss}"; 
+            twoDimensionalArray.SetDataToFile(pathToWrite);
+
+            File.Delete(pathToWrite); // удаляем временный файл
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Mime;
 
 namespace Lesson_4
 {
@@ -23,9 +24,9 @@ namespace Lesson_4
 
                 return result;
             }
-            catch (Exception e)
+            catch (FileLoadException e)
             {
-                Console.WriteLine($"Файл не может быть считан. {e}");
+                Console.WriteLine("Файл не может быть считан!");
                 throw;
             }
         }

@@ -15,6 +15,10 @@
       <Content Include="Autorization\DataBase.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="DataTwoDimArray" />
+      <Content Include="DataTwoDimArray">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>
