@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Lesson_5
 {
@@ -17,6 +18,9 @@ namespace Lesson_5
             {
                 case 1:
                     StartTask1();
+                    break;
+                case 2:
+                    StartTask2();
                     break;
             }
         }
@@ -56,6 +60,61 @@ namespace Lesson_5
                 Console.WriteLine("Логин некорректный, придумайте новый");
             }
             
+        }
+
+        private static void StartTask2()
+        {
+            /*  Разработать класс Message, содержащий следующие статические методы для обработки
+                текста:
+                    а) Вывести только те слова сообщения, которые содержат не более n букв.
+                    б) Удалить из сообщения все слова, которые заканчиваются на заданный символ.
+                    в) Найти самое длинное слово сообщения.
+                    г) Сформировать строку с помощью StringBuilder из самых длинных слов сообщения.
+                Продемонстрируйте работу программы на текстовом файле с вашей программой.*/
+
+
+            Console.WriteLine("Для демонстрации подзадания А, выбери режим: 1 - дефолтное сообщение, 2 - ручной ввод сообещния");
+            var type = Console.ReadLine();
+            var inputMessage = string.Empty;
+            switch (type)
+            {
+                case "2":
+                    inputMessage = Console.ReadLine();
+                    Console.WriteLine($"Кастомное сообщение: {inputMessage}");
+                    break;
+                default:
+                    inputMessage = "Это дефолтное сообщение, для просмотра второго задания к пятому уроку.";
+                    Console.WriteLine($"Дефолтное сообщение: {inputMessage}");
+                    break;
+            }
+            
+            var msg = new Message(inputMessage);
+
+            var wordsLength = 6;
+            var selectedWords = Message.GetWordsWithMaxLength(msg, wordsLength);
+            Console.WriteLine($"Показываю все слова, с максимальной длиной {wordsLength}:");
+            foreach (var word in selectedWords)
+                Console.Write($"{word} ");
+            
+            
+            Console.WriteLine("\n\nДемонстрация подзадания Б");
+            var lastSign = "е";
+            var parsedWords = Message.GetWordsWithoutWordsEndingSign(msg, lastSign);
+            Console.WriteLine($"Показываю все слова, кроме слов с окончанием на {lastSign}");
+            foreach (var word in parsedWords)
+                Console.Write($"{word} ");
+            
+            Console.WriteLine("\n\nДемонстрация подзадачи В");
+            var maxWord = Message.GetMaxWord(msg);
+            Console.WriteLine($"Показываю слово максимальной длины: {maxWord}");
+            
+            Console.WriteLine("\nДемонстрация подзадачи Г");
+            var maxWords = Message.GetAllMaxWords(msg);
+            
+            var sb = new StringBuilder();
+            foreach (var word in maxWords)
+                sb.Append($"{word} ");
+            Console.WriteLine($"Показываю слова максимальной длины: {sb}");
         }
     }
 }
