@@ -10,7 +10,7 @@ namespace Lesson_5
         static void Main(string[] args)
         {
             var number = 0;
-            Console.Write("Введи номер задачи от 1 до 4: ");
+            Console.Write("Введи номер задачи от 1 до 5: ");
             if (!int.TryParse(Console.ReadLine(), out number) || number > 5)
                 throw new ArgumentException("Вы ввели некорректное число!");
 
@@ -21,6 +21,9 @@ namespace Lesson_5
                     break;
                 case 2:
                     StartTask2();
+                    break;
+                case 3:
+                    StartTask3();
                     break;
             }
         }
@@ -115,6 +118,30 @@ namespace Lesson_5
             foreach (var word in maxWords)
                 sb.Append($"{word} ");
             Console.WriteLine($"Показываю слова максимальной длины: {sb}");
+        }
+
+        private static void StartTask3()
+        {
+              /*Для двух строк написать метод, определяющий, является ли одна строка перестановкой другой.
+               Регистр можно не учитывать:
+                а) с использованием методов C#;
+                б) *разработав собственный алгоритм.
+                Например:
+                badc являются перестановкой abcd.*/
+            
+            var s1 = "Привет";
+            var s2 = "Тевирп";
+            var ta = new TextAnalyzer(s1, s2);
+
+            Console.WriteLine("Проверка втроенымми методами C#");
+            Console.WriteLine(ta.CompareStrings() == 0
+                ? $"Строка: {s2} является перестановкой строки: {s1}"
+                : $"Строка: {s2} не является перестановкой строки: {s1}");
+            
+            Console.WriteLine("\nПроверка собственным алгоритмом");
+            Console.WriteLine(ta.CompareStringsByAndrey() == 0
+                ? $"Строка: {s2} является перестановкой строки: {s1}"
+                : $"Строка: {s2} не является перестановкой строки: {s1}");
         }
     }
 }
