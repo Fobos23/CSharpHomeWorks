@@ -6,4 +6,11 @@
         <RootNamespace>Lesson_5</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <None Remove="Task4\DataBaseImitator" />
+      <Content Include="Task4\DataBaseImitator">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
