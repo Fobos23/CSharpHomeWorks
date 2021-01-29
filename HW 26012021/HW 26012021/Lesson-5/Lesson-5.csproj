@@ -11,6 +11,10 @@
       <Content Include="Task4\DataBaseImitator">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="Task5\QuestionsDataBase" />
+      <Content Include="Task5\QuestionsDataBase">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

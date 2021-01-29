@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Lesson_5.Task4;
+using Lesson_5.Task5;
 
 namespace Lesson_5
 {
@@ -28,6 +29,9 @@ namespace Lesson_5
                     break;
                 case 4: 
                     StartTask4();
+                    break;
+                case 5:
+                    StartTask5();
                     break;
             }
         }
@@ -165,6 +169,38 @@ namespace Lesson_5
             
             var examResultPrinter = new ExamResultPrinter();
             Console.WriteLine(examResultPrinter.GetText());
+        }
+
+        private static void StartTask5()
+        {
+            /*Написать игру «Верю. Не верю». В файле хранятся вопрос и ответ, правда это или нет. Например:
+             «Шариковую ручку изобрели в древнем Египте», «Да». Компьютер загружает эти данные, случайным 
+             образом выбирает 5 вопросов и задаёт их игроку. Игрок отвечает Да или Нет на каждый вопрос и 
+             набирает баллы за каждый правильный ответ. Список вопросов ищите во вложении или воспользуйтесь 
+             интернетом.*/
+            
+            Console.WriteLine("Игра \"Правки или Ложь\"" +
+                              "\nОтвечай на вопросы только \"Да\" или \"Нет\"" +
+                              "\nЗа каждый правильный ответ ты получаешь 5 баллов");
+            
+            var game = new TrueOrFalseGame();
+            var questions = game.GetRandomQuestion();
+            var score = 0;
+            
+            foreach (var question in questions)
+            {
+                Console.Write($"{question._Question}? Ваш ответ: ");
+                var inputAnswer = Console.ReadLine();
+                if (game.CheckResult(question, inputAnswer))
+                {
+                    Console.WriteLine("Правильно!");
+                    score += 5;
+                    continue;
+                }
+                Console.WriteLine("Неверно..");
+            }
+            
+            Console.WriteLine($"Вы набрали {score} очков!");
         }
     }
 }
